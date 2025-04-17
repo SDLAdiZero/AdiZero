@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Rotating Tables</title>
+<script>
+  setTimeout(() => {
+    location.reload();
+  }, 32000);
+</script>
+
+
+  <style>
+    @font-face {
+      font-family: 'LiquidCrystal';
+      src: url('LiquidCrystal.otf') format('opentype');
+    }
+
+    body {
+      margin: 0;
+      font-family: 'LiquidCrystal', monospace;
+      background-color: #000;
+      color: #FF0044;
+      text-align: left;
+    }
+
+    .table-container {
+      width: 1800px;
+      margin: 60px 0 100px 0;
+    }
+
+    table {
+      width: 100%;
+      table-layout: auto;
+      border-collapse: collapse;
+      background: #000;
+      color: #FF0044;
+      font-size: 80px;
+      font-family: 'LiquidCrystal', monospace;
+    }
+
+    td {
+      padding: 6px 0;
+      border: none;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+tr {
+  height: 40px; /* Adjust as needed for your design */
+}
+
+
+    .name1, .name2 {
+      text-align: left;
+      min-width: 200px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .time1, .time2 {
+      text-align: right;
+      width: 100px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
+
+    .spacer {
+      width: 60px;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="table-container">
+    <table id="table1" class="hidden"></table>
+    <table id="table2" class="hidden"></table>
+    <table id="table3" class="hidden"></table>
+    <table id="table4" class="hidden"></table>
+  </div>
+
+ <script>
+  const tables = [
+    document.getElementById("table1"),
+    document.getElementById("table2"),
+    document.getElementById("table3"),
+    document.getElementById("table4")
+  ];
+  let currentIndex = 0;
+
+  function populateTable(table, data) {
+    table.innerHTML = "";
+    const tbody = document.createElement("tbody");
+    for (let i = 0; i < data.length; i++) {
+      const row = document.createElement("tr");
+
+      const td1 = document.createElement("td");
+      td1.textContent = data[i][0];
+      td1.className = "name1";
+      row.appendChild(td1);
+
+      const td2 = document.createElement("td");
+      td2.textContent = data[i][1];
+      td2.className = "time1";
+      row.appendChild(td2);
+
+      const spacer = document.createElement("td");
+      spacer.className = "spacer";
+      row.appendChild(spacer);
+
+      const td3 = document.createElement("td");
+      td3.textContent = data[i][2];
+      td3.className = "name2";
+      row.appendChild(td3);
+
+      const td4 = document.createElement("td");
+      td4.textContent = data[i][3];
+      td4.className = "time2";
+      row.appendChild(td4);
+
+      tbody.appendChild(row);
+    }
+    table.appendChild(tbody);
+  }
+
+  function startRotation() {
+    tables.forEach(t => t.classList.add("hidden"));
+    tables[0].classList.remove("hidden");
+    currentIndex = 0;
+    setInterval(() => {
+      tables[currentIndex].classList.add("hidden");
+      currentIndex = (currentIndex + 1) % tables.length;
+      tables[currentIndex].classList.remove("hidden");
+    }, 8000);
+  }
+
+  async function loadData() {
+    try {
+      const response = await fetch("times.json");
+      const json = await response.json();
+
+      if (json.tables && json.tables.length) {
+        // Flatten all name/time pairs
+        let allPairs = [];
+        for (const table of json.tables) {
+          for (const row of table) {
+            allPairs.push([row[0], row[1]]);
+            allPairs.push([row[2], row[3]]);
+          }
+        }
+
+        // Sort by descending time, treating "--.--" as lowest priority
+        allPairs.sort((a, b) => {
+          const aTime = a[1] === "00.00" ? -Infinity : parseFloat(a[1]);
+          const bTime = b[1] === "00.00" ? -Infinity : parseFloat(b[1]);
+          return bTime - aTime;
+        });
+
+        // Rebuild into rows of [name1, time1, name2, time2]
+        const rebuiltRows = [];
+        for (let i = 0; i < allPairs.length; i += 2) {
+          if (i + 1 < allPairs.length) {
+            rebuiltRows.push([
+              allPairs[i][0], allPairs[i][1],
+              allPairs[i + 1][0], allPairs[i + 1][1]
+            ]);
+          }
+        }
+
+        // Split into 4 tables of 9 rows each
+        for (let i = 0; i < 4; i++) {
+          const slice = rebuiltRows.slice(i * 9, (i + 1) * 9);
+          populateTable(tables[i], slice);
+        }
+
+        startRotation();
+      }
+    } catch (err) {
+      console.error("Failed to load or parse times.json", err);
+    }
+  }
+
+  loadData();
+</script>
+
+
+</body>
+</html>
