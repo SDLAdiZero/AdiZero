@@ -156,7 +156,7 @@ tr {
         }
 
         // Sort by descending time, treating "--.--" as lowest priority
-        allPairs.sort((a, b) => {
+        allPairs.sort((b, a) => {
           const aTime = a[1] === "00.00" ? -Infinity : parseFloat(a[1]);
           const bTime = b[1] === "00.00" ? -Infinity : parseFloat(b[1]);
           return bTime - aTime;
