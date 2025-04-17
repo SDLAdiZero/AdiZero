@@ -161,12 +161,25 @@ tr {
          // const bTime = b[1] === "00.00" ? -Infinity : parseFloat(b[1]);
           //return bTime - aTime;
         //});
-        allPairs.sort((b, a) => {
+        //allPairs.sort((b, a) => {
+//  const parseTime = (val) => {
+//    if (val === "00.00" || val === "--.--") return -Infinity;
+ //   const num = parseFloat(val);
+//    return isNaN(num) ? -Infinity : num;
+//  };
+
+        allPairs.sort((a, b) => {
   const parseTime = (val) => {
-    if (val === "00.00" || val === "--.--") return -Infinity;
+    if (val === "00.00" || val === "--.--") return Infinity; // placeholders are slowest
     const num = parseFloat(val);
-    return isNaN(num) ? -Infinity : num;
+    return isNaN(num) ? Infinity : num;
   };
+
+  const aTime = parseTime(a[1]);
+  const bTime = parseTime(b[1]);
+
+  return aTime - bTime; // Ascending order: fastest first
+});
 
   const aTime = parseTime(a[1]);
   const bTime = parseTime(b[1]);
