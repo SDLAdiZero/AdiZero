@@ -135,7 +135,7 @@ tr {
     currentIndex = 0;
     setInterval(() => {
       if (currentIndex === 0) {
-      loadData(); // Refresh data every time we wrap around to table 1
+      await loadData(); // Refresh data every time we wrap around to table 1
     }
       
       tables[currentIndex].classList.add("hidden");
