@@ -137,6 +137,10 @@ tr {
       tables[currentIndex].classList.add("hidden");
       currentIndex = (currentIndex + 1) % tables.length;
       tables[currentIndex].classList.remove("hidden");
+
+      if (currentIndex === 0) {
+      loadData(); // Refresh data every time we wrap around to table 1
+    }
     }, 8000);
   }
 
@@ -186,7 +190,7 @@ tr {
 
   startRotation();
   loadData();
-  setInterval(loadData, 32000); // Reload just the data every 32 seconds
+  //setInterval(loadData, 32000); // Reload just the data every 32 seconds
 </script>
 
 
