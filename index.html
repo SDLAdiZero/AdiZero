@@ -146,7 +146,7 @@ tr {
 
   async function loadData() {
     try {
-      const response = await fetch("https://sdladizero.github.io/times/times.json?ts=" + new Date().getTime());
+      const response = await fetch("https://raw.githubusercontent.com/SDLAdiZero/times/refs/heads/main/times.json?ts=" + new Date().getTime());
       const json = await response.json();
 
       if (json.tables && json.tables.length) {
