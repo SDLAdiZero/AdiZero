@@ -129,7 +129,7 @@ tr {
     table.appendChild(tbody);
   }
 
-  function startRotation() {
+  async function startRotation() {
     tables.forEach(t => t.classList.add("hidden"));
     tables[0].classList.remove("hidden");
     currentIndex = 0;
@@ -188,7 +188,7 @@ tr {
     }
   }
 
-  loadData();
+  //loadData();
   startRotation();
   //setInterval(loadData, 32000); // Reload just the data every 32 seconds
 </script>
