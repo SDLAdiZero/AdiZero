@@ -134,13 +134,13 @@ tr {
     tables[0].classList.remove("hidden");
     currentIndex = 0;
     setInterval(() => {
-      tables[currentIndex].classList.add("hidden");
-      currentIndex = (currentIndex + 1) % tables.length;
-      tables[currentIndex].classList.remove("hidden");
-
       if (currentIndex === 0) {
       loadData(); // Refresh data every time we wrap around to table 1
     }
+      
+      tables[currentIndex].classList.add("hidden");
+      currentIndex = (currentIndex + 1) % tables.length;
+      tables[currentIndex].classList.remove("hidden");
     }, 8000);
   }
 
@@ -189,7 +189,7 @@ tr {
   }
 
   startRotation();
-  loadData();
+  //loadData();
   //setInterval(loadData, 32000); // Reload just the data every 32 seconds
 </script>
 
