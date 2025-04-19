@@ -160,23 +160,28 @@
   }
 
   // Start rotation and refresh data each time it rotates back to the first table
-  async function startRotation() {
+  function startRotation() {
     tables.forEach(t => t.classList.add("hidden"));
     tables[0].classList.remove("hidden");
     currentIndex = 0;
 
+    // Set an interval to rotate the tables every 8 seconds
     setInterval(async () => {
-      if (currentIndex === 3) {
+      // When we reach the first table (index 0), reload the data
+      if (currentIndex === 0) {
         await loadData(); // Refresh data when rotating back to table 1
       }
       
+      // Hide the current table
       tables[currentIndex].classList.add("hidden");
+      // Increment the currentIndex to rotate to the next table
       currentIndex = (currentIndex + 1) % tables.length;
+      // Show the new current table
       tables[currentIndex].classList.remove("hidden");
     }, 8000);
   }
 
-  // Load data initially and start rotation
+  // Load data initially before starting the rotation
   loadData().then(() => {
     startRotation();
   });
