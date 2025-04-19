@@ -188,8 +188,10 @@ tr {
     }
   }
 
-  //loadData();
-  startRotation();
+    // Call loadData immediately before starting the rotation
+  loadData().then(() => {
+    startRotation(); // Once data is loaded, start the rotation
+  });
   //setInterval(loadData, 32000); // Reload just the data every 32 seconds
 </script>
 
