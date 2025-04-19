@@ -133,7 +133,7 @@ tr {
     tables.forEach(t => t.classList.add("hidden"));
     tables[0].classList.remove("hidden");
     currentIndex = 0;
-    setInterval(() => {
+    setInterval(async () => {
       if (currentIndex === 3) {
       await loadData(); // Refresh data every time we wrap around to table 1
     }
