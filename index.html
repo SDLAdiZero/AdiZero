@@ -68,6 +68,7 @@
     <table id="table2" class="hidden"></table>
     <table id="table3" class="hidden"></table>
     <table id="table4" class="hidden"></table>
+    <table id="table5" class="hidden"></table>
   </div>
 
 <script>
@@ -75,7 +76,8 @@
     document.getElementById("table1"),
     document.getElementById("table2"),
     document.getElementById("table3"),
-    document.getElementById("table4")
+    document.getElementById("table4"),
+    document.getElementById("table5")
   ];
   let currentIndex = 0;
 
@@ -156,7 +158,7 @@
         console.log(`[${new Date().toLocaleTimeString()}] Top 5 rows:`);
         console.table(rebuiltRows.slice(0, 5));
 
-        for (let i = 0; i < 4; i++) {
+        for (let i = 0; i < 5; i++) {
           const slice = rebuiltRows.slice(i * 9, (i + 1) * 9);
           populateTable(tables[i], slice);
         }
